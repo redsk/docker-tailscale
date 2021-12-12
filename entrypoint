@@ -2,6 +2,11 @@
 
 set -e
 
+echo "setting up iptables"
+iptables -t nat -A PREROUTING -p tcp --dport 2375 -j DNAT --to-destination 127.0.0.1:2375
+iptables -t nat -A POSTROUTING -j MASQUERADE
+echo "iptables set up"
+
 up() {
   sleep 5
 
@@ -31,4 +36,6 @@ up & tailscaled \
   -socket ${TAILSCALED_SOCKET:-"/var/run/tailscale/tailscaled.sock"} \
   -state ${TAILSCALED_STATE:-"/var/lib/tailscale/tailscaled.state"} \
   -tun ${TAILSCALED_TUN:-"tailscale0"} \
-  -verbose ${TAILSCALED_VERBOSE:-0}
+  -verbose ${TAILSCALED_VERBOSE:-0} > /tailscale.log &
+
+/usr/local/bin/dockerd-entrypoint.sh
