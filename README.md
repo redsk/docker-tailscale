@@ -2,19 +2,20 @@
 
 A remote docker server for easing the pain of docker on Apple Silicon.
 
-Build docker image in the `docker-image` directory:
+Build docker image in the `docker-image` directory (optional):
 ```bash
-docker buildx build --platform linux/amd64 -t redsk/tailscale-remote-docker:0.0.11 --push .
+docker buildx build --platform linux/amd64 -t redsk/tailscale-remote-docker:0.1.0 --push .
 ```
 
-Deploy Helm chart (assumes you have EBS storage class available in your AWS cluster):
+Deploy Helm chart (assumes you have EBS storage class available in your AWS cluster), 
+from the `helm-chart/tailscale-relay` directory:
 ```bash
 helm -n remotedocker upgrade --install \
   docker-server \
   . \
   --set config.authKey=<your auth key> \
   --set image.repository=docker.io/redsk/tailscale-remote-docker \
-  --set image.tag=0.0.11 \
+  --set image.tag=0.1.0 \
   --set 'securityContext.privileged=true' \
   --set volumeSize=100Gi
 ```
