@@ -1,7 +1,7 @@
 FROM yobasystems/alpine-docker:dind-amd64
 
 ARG TARGETARCH=amd64
-ARG VERSION=1.20.1
+ARG VERSION=1.22.0
 
 RUN \
   apk add --no-cache iptables iproute2 ca-certificates bash \
